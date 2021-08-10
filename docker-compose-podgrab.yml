@@ -9,21 +9,34 @@ services:
       - CHECK_FREQUENCY=240
     volumes:
       - podgrab-conf:/conf
-          driver:cifs
-            opt:type=cifs
-            opt:device=//10.0.3.1/Podcasts
-            opt:o=addr=10.0.3.1,username=ihatedocker,password=thehellwiththis,file_mode=0777,dir_mode=0777
-            name:cif-volume
+          #driver:cifs
+          #  opt:type=cifs
+          #  opt:device=//10.0.3.1/Podcasts
+          #  opt:o=addr=10.0.3.1,username=ihatedocker,password=thehellwiththis,file_mode=0777,dir_mode=0777
+          #  name:cif-volume
       - podgrab-data:/assets
-          driver:cifs
-            opt:type=cifs
-            opt:device=//10.0.3.1/Podcasts
-            opt:o=addr=10.0.3.1,username=whydoesntanythingwork,password=herpaderp,file_mode=0777,dir_mode=0777
-            name:cif-volume
+          #driver:cifs
+          #  opt:type=cifs
+          #  opt:device=//10.0.3.1/Podcasts
+          #  opt:o=addr=10.0.3.1,username=whydoesntanythingwork,password=herpaderp,file_mode=0777,dir_mode=0777
+          #  name:cif-volume
     ports:
       - 8080:8080
     restart: unless-stopped
 
 volumes:
   podgrab-conf:
+    #driver: local - should probably also go here
+    driver-opts: 
+      
+      type: "cifs"
+      device: "//10.0.3.1/Podcasts"
+      o: "addr=10.0.3.1,username=ihatedocker,password=thehellwiththis,file_mode=0777,dir_mode=0777"
+      name: "conf-cif-volume"
   podgrab-data:
+    #driver: local - should probably also go here
+    driver-opts: 
+      type: "cifs"
+      device: "//10.0.3.1/Podcasts" #you are monuting the same folder on both locations intentionally or is this an error?
+      o: "addr=10.0.3.1,username=ihatedocker,password=thehellwiththis,file_mode=0777,dir_mode=0777" #vers=3.0 can also go among the options, based on which smb version are you using 
+      name: "data-cif-volume"
